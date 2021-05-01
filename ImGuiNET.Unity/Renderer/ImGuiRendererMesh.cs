@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Rendering;
 using Unity.Collections;
+using System.Collections.Generic;
 using Unity.Collections.LowLevel.Unsafe;
 using Unity.Profiling;
 
@@ -57,8 +58,8 @@ namespace ImGuiNET.Unity
         {
             io.SetBackendRendererName(null);
 
-            if (_mesh     != null) { Object.Destroy(_mesh);      _mesh     = null; }
-            if (_material != null) { Object.Destroy(_material);  _material = null; }
+            if (_mesh != null) { Object.Destroy(_mesh); _mesh = null; }
+            if (_material != null) { Object.Destroy(_material); _material = null; }
         }
 
         public void RenderDrawLists(CommandBuffer cmd, ImDrawDataPtr drawData)
@@ -91,18 +92,19 @@ namespace ImGuiNET.Unity
                 _mesh.subMeshCount = _prevSubMeshCount = subMeshCount;
             }
             _mesh.SetVertexBufferParams(drawData.TotalVtxCount, s_attributes);
-            _mesh.SetIndexBufferParams (drawData.TotalIdxCount, IndexFormat.UInt16);
+            _mesh.SetIndexBufferParams(drawData.TotalIdxCount, IndexFormat.UInt16);
 
             // upload data into mesh
             int vtxOf = 0;
             int idxOf = 0;
-            int subOf = 0;
+            List<SubMeshDescriptor> descriptors = new List<SubMeshDescriptor>();
+
             for (int n = 0, nMax = drawData.CmdListsCount; n < nMax; ++n)
             {
                 ImDrawListPtr drawList = drawData.CmdListsRange[n];
                 NativeArray<ImDrawVert> vtxArray = NativeArrayUnsafeUtility.ConvertExistingDataToNativeArray<ImDrawVert>(
                     (void*)drawList.VtxBuffer.Data, drawList.VtxBuffer.Size, Allocator.None);
-                NativeArray<ushort>     idxArray = NativeArrayUnsafeUtility.ConvertExistingDataToNativeArray<ushort>(
+                NativeArray<ushort> idxArray = NativeArrayUnsafeUtility.ConvertExistingDataToNativeArray<ushort>(
                     (void*)drawList.IdxBuffer.Data, drawList.IdxBuffer.Size, Allocator.None);
 
 #if ENABLE_UNITY_COLLECTIONS_CHECKS
@@ -111,7 +113,7 @@ namespace ImGuiNET.Unity
 #endif
                 // upload vertex/index data
                 _mesh.SetVertexBufferData(vtxArray, 0, vtxOf, vtxArray.Length, 0, NoMeshChecks);
-                _mesh.SetIndexBufferData (idxArray, 0, idxOf, idxArray.Length,    NoMeshChecks);
+                _mesh.SetIndexBufferData(idxArray, 0, idxOf, idxArray.Length, NoMeshChecks);
 
                 // define subMeshes
                 for (int i = 0, iMax = drawList.CmdBuffer.Size; i < iMax; ++i)
@@ -124,11 +126,13 @@ namespace ImGuiNET.Unity
                         indexCount = (int)cmd.ElemCount,
                         baseVertex = vtxOf + (int)cmd.VtxOffset,
                     };
-                    _mesh.SetSubMesh(subOf++, descriptor, NoMeshChecks);
+                    descriptors.Add(descriptor);
                 }
+
                 vtxOf += vtxArray.Length;
                 idxOf += idxArray.Length;
             }
+            _mesh.SetSubMeshes(descriptors, NoMeshChecks);
             _mesh.UploadMeshData(false);
         }
 

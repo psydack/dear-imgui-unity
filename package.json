@@ -1,9 +1,9 @@
 {
-  "name": "com.realgames.dear-imgui",
+  "name": "com.insane.dear-imgui",
   "displayName": "Dear ImGui",
-  "version": "1.0.0",
+  "version": "1.2.3",
   "description": "Bloat-free Immediate Mode Graphical User interface",
-  "unity": "2019.3",
+  "unity": "2020.3",
   "keywords": [
     "dear",
     "imgui",
