@@ -1,5 +1,6 @@
 {
     "name": "RG.ImGui",
+    "rootNamespace": "",
     "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],
