@@ -1,7 +1,7 @@
 {
-  "name": "com.insane.dear-imgui",
+  "name": "com.batata.dear-imgui",
   "displayName": "Dear ImGui",
-  "version": "1.2.3",
+  "version": "1.0.0",
   "description": "Bloat-free Immediate Mode Graphical User interface",
   "unity": "2020.3",
   "keywords": [
@@ -18,7 +18,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/realgamessoftware/dear-imgui-unity",
+    "url": "https://github.com/psydack/dear-imgui-unity",
     "revision": ""
   },
   "type": "library"
