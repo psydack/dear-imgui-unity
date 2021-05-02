@@ -2,6 +2,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.Assertions;
+using NumericsV2f = System.Numerics.Vector2;
 
 namespace ImGuiNET.Unity
 {
@@ -29,31 +30,31 @@ namespace ImGuiNET.Unity
 		private readonly PlatformCallbacks _callbacks = new PlatformCallbacks();
 
 		[MonoPInvokeCallback(typeof(GetClipboardTextCallback))]
-		public unsafe static string GetClipboardTextCallback(void* user_data)
+		public static unsafe string GetClipboardTextCallback(void* user_data)
 		{
 			return GUIUtility.systemCopyBuffer;
 		}
 
 		[MonoPInvokeCallback(typeof(SetClipboardTextCallback))]
-		public unsafe static void SetClipboardTextCallback(void* user_data, byte* text)
+		public static unsafe void SetClipboardTextCallback(void* user_data, byte* text)
 		{
 			GUIUtility.systemCopyBuffer = Util.StringFromPtr(text);
 		}
 
 		[MonoPInvokeCallback(typeof(ImeSetInputScreenPosCallback))]
-		public unsafe static void ImeSetInputScreenPosCallback(int x, int y)
+		public static unsafe void ImeSetInputScreenPosCallback(int x, int y)
 		{
 			Input.compositionCursorPos = new Vector2(x, y);
 		}
 #if IMGUI_FEATURE_CUSTOM_ASSERT
 		[MonoPInvokeCallback(typeof(LogAssertCallback))]
-		public unsafe static void LogAssertCallback(byte* condition, byte* file, int line)
+		public static unsafe void LogAssertCallback(byte* condition, byte* file, int line)
 		{
 			Debug.LogError($"[DearImGui] Assertion failed: '{Util.StringFromPtr(condition)}', file '{Util.StringFromPtr(file)}', line: {line}.");
 		}
 
 		[MonoPInvokeCallback(typeof(DebugBreakCallback))]
-		public unsafe static void DebugBreakCallback()
+		public static unsafe void DebugBreakCallback()
 		{
 			System.Diagnostics.Debugger.Break();
 		}
@@ -113,8 +114,8 @@ namespace ImGuiNET.Unity
 		{
 			Assert.IsTrue(io.Fonts.IsBuilt(), "Font atlas not built! Generally built by the renderer. Missing call to renderer NewFrame() function?");
 
-			io.DisplaySize = new Vector2(displayRect.width, displayRect.height);// setup display size (every frame to accommodate for window resizing)
-																				// TODO: dpi aware, scale, etc
+			io.DisplaySize = new NumericsV2f(displayRect.width, displayRect.height);// setup display size (every frame to accommodate for window resizing)
+																					// TODO: dpi aware, scale, etc
 
 			io.DeltaTime = Time.unscaledDeltaTime;                              // setup timestep
 
@@ -179,9 +180,9 @@ namespace ImGuiNET.Unity
 					io.AddInputCharacter(_e.character);
 		}
 
-		private static void UpdateMouse(ImGuiIOPtr io)
+		private static unsafe void UpdateMouse(ImGuiIOPtr io)
 		{
-			io.MousePos = ImGuiUn.ScreenToImGui(new Vector2(Input.mousePosition.x, Input.mousePosition.y));
+			io.MousePos = Helper.V2f(ImGuiUn.ScreenToImGui(Input.mousePosition));
 
 			io.MouseWheel = Input.mouseScrollDelta.y;
 			io.MouseWheelH = Input.mouseScrollDelta.x;

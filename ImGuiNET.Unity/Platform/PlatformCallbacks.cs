@@ -1,4 +1,4 @@
-﻿﻿using System;
+﻿using System;
 using System.Runtime.InteropServices;
 using UnityEngine;
 
@@ -19,18 +19,19 @@ namespace ImGuiNET.Unity
 	internal delegate void ImeSetInputScreenPosCallback(int x, int y);
 
 #if IMGUI_FEATURE_CUSTOM_ASSERT
-    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    unsafe delegate void LogAssertCallback(byte* condition, byte* file, int line);
-    delegate void LogAssertSafeCallback(string condition, string file, int line);
+	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+	internal unsafe delegate void LogAssertCallback(byte* condition, byte* file, int line);
 
-    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    delegate void DebugBreakCallback();
+	internal delegate void LogAssertSafeCallback(string condition, string file, int line);
 
-    unsafe struct CustomAssertData
-    {
-        public IntPtr LogAssertFn;
-        public IntPtr DebugBreakFn;
-    }
+	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+	internal delegate void DebugBreakCallback();
+
+	internal unsafe struct CustomAssertData
+	{
+		public IntPtr LogAssertFn;
+		public IntPtr DebugBreakFn;
+	}
 #endif
 
 	internal unsafe class PlatformCallbacks
@@ -41,8 +42,8 @@ namespace ImGuiNET.Unity
 		private static SetClipboardTextCallback _setClipboardText;
 		private static ImeSetInputScreenPosCallback _imeSetInputScreenPos;
 #if IMGUI_FEATURE_CUSTOM_ASSERT
-        private static LogAssertCallback _logAssert;
-        private static DebugBreakCallback _debugBreak;
+		private static LogAssertCallback _logAssert;
+		private static DebugBreakCallback _debugBreak;
 #endif
 
 		public static void SetClipboardFunctions(
@@ -77,13 +78,13 @@ namespace ImGuiNET.Unity
 		{
 			io.SetClipboardTextFn = Marshal.GetFunctionPointerForDelegate(_setClipboardText);
 			io.GetClipboardTextFn = Marshal.GetFunctionPointerForDelegate(_getClipboardText);
-			io.ImeSetInputScreenPosFn = Marshal.GetFunctionPointerForDelegate(_imeSetInputScreenPos);
+
 #if IMGUI_FEATURE_CUSTOM_ASSERT
-            io.SetBackendPlatformUserData<CustomAssertData>(new CustomAssertData
-            {
-                LogAssertFn = Marshal.GetFunctionPointerForDelegate(_logAssert),
-                DebugBreakFn = Marshal.GetFunctionPointerForDelegate(_debugBreak),
-            });
+			io.SetBackendPlatformUserData<CustomAssertData>(new CustomAssertData
+			{
+				LogAssertFn = Marshal.GetFunctionPointerForDelegate(_logAssert),
+				DebugBreakFn = Marshal.GetFunctionPointerForDelegate(_debugBreak),
+			});
 #endif
 		}
 
@@ -91,9 +92,9 @@ namespace ImGuiNET.Unity
 		{
 			io.SetClipboardTextFn = IntPtr.Zero;
 			io.GetClipboardTextFn = IntPtr.Zero;
-			io.ImeSetInputScreenPosFn = IntPtr.Zero;
+
 #if IMGUI_FEATURE_CUSTOM_ASSERT
-            io.SetBackendPlatformUserData<CustomAssertData>(null);
+			io.SetBackendPlatformUserData<CustomAssertData>(null);
 #endif
 		}
 
@@ -126,23 +127,23 @@ namespace ImGuiNET.Unity
 		}
 
 #if IMGUI_FEATURE_CUSTOM_ASSERT
-        public static LogAssertSafeCallback LogAssert
-        {
-            set => _logAssert = (condition, file, line) =>
-            {
-                try { value(Util.StringFromPtr(condition), Util.StringFromPtr(file), line); }
-                catch (Exception ex) { Debug.LogException(ex); }
-            };
-        }
+		public static LogAssertSafeCallback LogAssert
+		{
+			set => _logAssert = (condition, file, line) =>
+			{
+				try { value(Util.StringFromPtr(condition), Util.StringFromPtr(file), line); }
+				catch (Exception ex) { Debug.LogException(ex); }
+			};
+		}
 
-        public static DebugBreakCallback DebugBreak
-        {
-            set => _debugBreak = () =>
-            {
-                try { value(); }
-                catch (Exception ex) { Debug.LogException(ex); }
-            };
-        }
+		public static DebugBreakCallback DebugBreak
+		{
+			set => _debugBreak = () =>
+			{
+				try { value(); }
+				catch (Exception ex) { Debug.LogException(ex); }
+			};
+		}
 #endif
 	}
 }
