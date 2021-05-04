@@ -28,14 +28,14 @@ namespace ImGuiNET
 			else { native_text = null; }
 			byte* native_text_end = null;
 
-			NumericsV2f* ret = null;
-			ImGuiNative.ImFont_CalcTextSizeA(ret, NativePtr, font_size, max_width, wrap_width, native_text, native_text_end, (byte**)0);
+			NumericsV2f ret;
+			ImGuiNative.ImFont_CalcTextSizeA(&ret, NativePtr, font_size, max_width, wrap_width, native_text, native_text_end, (byte**)0);
 
 			if (text_byteCount > Util.StackAllocationSizeLimit)
 			{
 				Util.Free(native_text);
 			}
-			return new Vector2(ret->X, ret->Y);
+			return new Vector2(ret.X, ret.Y);
 		}
 
 		public Vector2 CalcTextSizeA(float font_size, float max_width, float wrap_width, char ch)
@@ -49,9 +49,9 @@ namespace ImGuiNET
 			native_text[native_text_offset] = 0;
 			byte* native_text_end = null;
 
-			NumericsV2f* ret = null;
-			ImGuiNative.ImFont_CalcTextSizeA(ret, NativePtr, font_size, max_width, wrap_width, native_text, native_text_end, (byte**)0);
-			return new Vector2(ret->X, ret->Y);
+			NumericsV2f ret;
+			ImGuiNative.ImFont_CalcTextSizeA(&ret, NativePtr, font_size, max_width, wrap_width, native_text, native_text_end, (byte**)0);
+			return new Vector2(ret.X, ret.Y);
 		}
 
 		public int CalcWordWrapPositionA(float scale, string text, float wrap_width)
