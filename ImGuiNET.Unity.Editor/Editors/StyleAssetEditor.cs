@@ -45,10 +45,10 @@ namespace ImGuiNET.Unity.Editor
 			{
 				for (int i = 0; i < (int)ImGuiCol.COUNT; ++i)
 				{
-					Color indexColor = Helper.Color(styleAsset.Colors[i]);
+					Color indexColor = styleAsset.Colors[i];
 					Color newColor = EditorGUILayout.ColorField(ImGui.GetStyleColorName((ImGuiCol)i), indexColor);
 					changed |= (newColor != indexColor);
-					styleAsset.Colors[i] = Helper.Color(newColor);
+					styleAsset.Colors[i] = newColor;
 				}
 			}
 
