@@ -79,14 +79,12 @@ namespace ImGuiNET.Unity
 				PlatformCallbacks.SetClipboardFunctions(
 					GetClipboardTextCallback,
 					SetClipboardTextCallback,
-					ImeSetInputScreenPosCallback,
 					LogAssertCallback,
 					DebugBreakCallback);
 #else
 				PlatformCallbacks.SetClipboardFunctions(
 					GetClipboardTextCallback,
-					SetClipboardTextCallback,
-					ImeSetInputScreenPosCallback);
+					SetClipboardTextCallback);
 #endif
 			}
 
@@ -135,8 +133,8 @@ namespace ImGuiNET.Unity
 		private void SetupKeyboard(ImGuiIOPtr io)
 		{
 			_mainKeys = new int[] {
-                // map and store new keys by assigning io.KeyMap and setting value of array
-                io.KeyMap[(int)ImGuiKey.Tab        ] = (int)KeyCode.Tab,
+				// map and store new keys by assigning io.KeyMap and setting value of array
+				io.KeyMap[(int)ImGuiKey.Tab        ] = (int)KeyCode.Tab,
 				io.KeyMap[(int)ImGuiKey.LeftArrow  ] = (int)KeyCode.LeftArrow,
 				io.KeyMap[(int)ImGuiKey.RightArrow ] = (int)KeyCode.RightArrow,
 				io.KeyMap[(int)ImGuiKey.UpArrow    ] = (int)KeyCode.UpArrow,
@@ -153,12 +151,12 @@ namespace ImGuiNET.Unity
 				io.KeyMap[(int)ImGuiKey.Escape     ] = (int)KeyCode.Escape,
 				io.KeyMap[(int)ImGuiKey.KeyPadEnter] = (int)KeyCode.KeypadEnter,
 				io.KeyMap[(int)ImGuiKey.A          ] = (int)KeyCode.A,           // for text edit CTRL+A: select all
-                io.KeyMap[(int)ImGuiKey.C          ] = (int)KeyCode.C,           // for text edit CTRL+C: copy
-                io.KeyMap[(int)ImGuiKey.V          ] = (int)KeyCode.V,           // for text edit CTRL+V: paste
-                io.KeyMap[(int)ImGuiKey.X          ] = (int)KeyCode.X,           // for text edit CTRL+X: cut
-                io.KeyMap[(int)ImGuiKey.Y          ] = (int)KeyCode.Y,           // for text edit CTRL+Y: redo
-                io.KeyMap[(int)ImGuiKey.Z          ] = (int)KeyCode.Z,           // for text edit CTRL+Z: undo
-            };
+				io.KeyMap[(int)ImGuiKey.C          ] = (int)KeyCode.C,           // for text edit CTRL+C: copy
+				io.KeyMap[(int)ImGuiKey.V          ] = (int)KeyCode.V,           // for text edit CTRL+V: paste
+				io.KeyMap[(int)ImGuiKey.X          ] = (int)KeyCode.X,           // for text edit CTRL+X: cut
+				io.KeyMap[(int)ImGuiKey.Y          ] = (int)KeyCode.Y,           // for text edit CTRL+Y: redo
+				io.KeyMap[(int)ImGuiKey.Z          ] = (int)KeyCode.Z,           // for text edit CTRL+Z: undo
+			};
 		}
 
 		private void UpdateKeyboard(ImGuiIOPtr io)
@@ -180,9 +178,12 @@ namespace ImGuiNET.Unity
 					io.AddInputCharacter(_e.character);
 		}
 
-		private static unsafe void UpdateMouse(ImGuiIOPtr io)
+		private static void UpdateMouse(ImGuiIOPtr io)
 		{
 			io.MousePos = Helper.V2f(ImGuiUn.ScreenToImGui(Input.mousePosition));
+
+			// WTF?
+			NumericsV2f xxx = ImGui.GetMousePos();
 
 			io.MouseWheel = Input.mouseScrollDelta.y;
 			io.MouseWheelH = Input.mouseScrollDelta.x;

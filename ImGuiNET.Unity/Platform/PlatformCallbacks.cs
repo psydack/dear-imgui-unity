@@ -40,7 +40,6 @@ namespace ImGuiNET.Unity
 		// after assigning its function pointers to unmanaged code
 		private static GetClipboardTextCallback _getClipboardText;
 		private static SetClipboardTextCallback _setClipboardText;
-		private static ImeSetInputScreenPosCallback _imeSetInputScreenPos;
 #if IMGUI_FEATURE_CUSTOM_ASSERT
 		private static LogAssertCallback _logAssert;
 		private static DebugBreakCallback _debugBreak;
@@ -48,27 +47,22 @@ namespace ImGuiNET.Unity
 
 		public static void SetClipboardFunctions(
 			GetClipboardTextCallback getCb,
-			SetClipboardTextCallback setCb,
-			ImeSetInputScreenPosCallback imeCb)
+			SetClipboardTextCallback setCb)
 		{
 			_getClipboardText = getCb;
 			_setClipboardText = setCb;
-			_imeSetInputScreenPos = imeCb;
-
 		}
 
 #if IMGUI_FEATURE_CUSTOM_ASSERT
 		public static void SetClipboardFunctions(
 			GetClipboardTextCallback getCb,
 			SetClipboardTextCallback setCb,
-			ImeSetInputScreenPosCallback imeCb,
 			LogAssertCallback logCb,
 			DebugBreakCallback debugBreakCb
 			)
 		{
 			_getClipboardText = getCb;
 			_setClipboardText = setCb;
-			_imeSetInputScreenPos = imeCb;
 			_logAssert = logCb;
 			_debugBreak = debugBreakCb;
 		}
@@ -113,15 +107,6 @@ namespace ImGuiNET.Unity
 			set => _setClipboardText = (user_data, text) =>
 			{
 				try { value(new IntPtr(user_data), Util.StringFromPtr(text)); }
-				catch (Exception ex) { Debug.LogException(ex); }
-			};
-		}
-
-		public static ImeSetInputScreenPosCallback ImeSetInputScreenPos
-		{
-			set => _imeSetInputScreenPos = (x, y) =>
-			{
-				try { value(x, y); }
 				catch (Exception ex) { Debug.LogException(ex); }
 			};
 		}
