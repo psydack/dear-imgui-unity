@@ -107,9 +107,11 @@ namespace ImGuiNET.Unity
 		public bool AntiAliasedFill;
 
 		[Tooltip("Tessellation tolerance when using PathBezierCurveTo() without a specific number of segments. Decrease for highly tessellated curves (higher quality, more polygons), increase to reduce quality.")]
+		[Min(0.01f)]
 		public float CurveTessellationTol;
 
-		[Tooltip("Maximum error (in pixels) allowed when using AddCircle()/AddCircleFilled() or drawing rounded corner rectangles with no explicit segment count specified. Decrease for higher quality but more geometry.")]
+		[Tooltip("Maximum error (in pixels) allowed when using AddCircle()/AddCircleFilled() or drawing rounded corner rectangles with no explicit segment count specified. Decrease for higher quality but more geometry. Cannot be 0..")]
+		[Min(0.01f)]
 		public float CircleTessellationMaxError;
 
 		[HideInInspector]
