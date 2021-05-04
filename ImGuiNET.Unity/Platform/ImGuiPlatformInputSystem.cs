@@ -1,4 +1,4 @@
-﻿﻿#if HAS_INPUTSYSTEM
+﻿#if HAS_INPUTSYSTEM
 using System;
 using System.Collections.Generic;
 using UnityEngine;
