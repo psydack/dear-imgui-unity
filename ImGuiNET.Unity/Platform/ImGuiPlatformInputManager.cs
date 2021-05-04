@@ -182,9 +182,6 @@ namespace ImGuiNET.Unity
 		{
 			io.MousePos = Helper.V2f(ImGuiUn.ScreenToImGui(Input.mousePosition));
 
-			// WTF?
-			NumericsV2f xxx = ImGui.GetMousePos();
-
 			io.MouseWheel = Input.mouseScrollDelta.y;
 			io.MouseWheelH = Input.mouseScrollDelta.x;
 
