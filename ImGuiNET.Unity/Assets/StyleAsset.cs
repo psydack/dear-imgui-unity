@@ -1,6 +1,4 @@
 ﻿using UnityEngine;
-using NumericsV2f = System.Numerics.Vector2;
-using NumericsV4f = System.Numerics.Vector4;
 
 namespace ImGuiNET.Unity
 {
@@ -11,7 +9,7 @@ namespace ImGuiNET.Unity
 		public float Alpha;
 
 		[Tooltip("Padding within a window.")]
-		public NumericsV2f WindowPadding;
+		public Vector2 WindowPadding;
 
 		[Tooltip("Radius of window corners rounding. Set to 0.0f to have rectangular windows.")]
 		public float WindowRounding;
@@ -20,10 +18,10 @@ namespace ImGuiNET.Unity
 		public float WindowBorderSize;
 
 		[Tooltip("Minimum window size. This is a global setting. If you want to constraint individual windows, use SetNextWindowSizeConstraints().")]
-		public NumericsV2f WindowMinSize;
+		public Vector2 WindowMinSize;
 
 		[Tooltip("Alignment for title bar text. Defaults to (0.0f,0.5f) for left-aligned,vertically centered.")]
-		public NumericsV2f WindowTitleAlign;
+		public Vector2 WindowTitleAlign;
 
 		[Tooltip("Side of the collapsing/docking button in the title bar (left/right). Defaults to ImGuiDir_Left.")]
 		public ImGuiDir WindowMenuButtonPosition;
@@ -41,7 +39,7 @@ namespace ImGuiNET.Unity
 		public float PopupBorderSize;
 
 		[Tooltip("Padding within a framed rectangle (used by most widgets).")]
-		public NumericsV2f FramePadding;
+		public Vector2 FramePadding;
 
 		[Tooltip("Radius of frame corners rounding. Set to 0.0f to have rectangular frame (used by most widgets).")]
 		public float FrameRounding;
@@ -50,13 +48,13 @@ namespace ImGuiNET.Unity
 		public float FrameBorderSize;
 
 		[Tooltip("Horizontal and vertical spacing between widgets/lines.")]
-		public NumericsV2f ItemSpacing;
+		public Vector2 ItemSpacing;
 
 		[Tooltip("Horizontal and vertical spacing between within elements of a composed widget (e.g. a slider and its label).")]
-		public NumericsV2f ItemInnerSpacing;
+		public Vector2 ItemInnerSpacing;
 
 		[Tooltip("Expand reactive bounding box for touch-based system where touch position is not accurate enough. Unfortunately we don't sort widgets so priority on overlap will always be given to the first widget. So don't grow this too much!")]
-		public NumericsV2f TouchExtraPadding;
+		public Vector2 TouchExtraPadding;
 
 		[Tooltip("Horizontal indentation when e.g. entering a tree node. Generally == (FontSize + FramePadding.x*2).")]
 		public float IndentSpacing;
@@ -86,16 +84,16 @@ namespace ImGuiNET.Unity
 		public ImGuiDir ColorButtonPosition;
 
 		[Tooltip("Alignment of button text when button is larger than text. Defaults to (0.5f, 0.5f) (centered).")]
-		public NumericsV2f ButtonTextAlign;
+		public Vector2 ButtonTextAlign;
 
 		[Tooltip("Alignment of selectable text when selectable is larger than text. Defaults to (0.0f, 0.0f) (top-left aligned).")]
-		public NumericsV2f SelectableTextAlign;
+		public Vector2 SelectableTextAlign;
 
 		[Tooltip("Window position are clamped to be visible within the display area by at least this amount. Only applies to regular windows.")]
-		public NumericsV2f DisplayWindowPadding;
+		public Vector2 DisplayWindowPadding;
 
 		[Tooltip("If you cannot see the edges of your screen (e.g. on a TV) increase the safe area padding. Apply to popups/tooltips as well regular windows. NB: Prefer configuring your TV sets correctly!")]
-		public NumericsV2f DisplaySafeAreaPadding;
+		public Vector2 DisplaySafeAreaPadding;
 
 		[Tooltip("Scale software rendered mouse cursor (when io.MouseDrawCursor is enabled). May be removed later.")]
 		public float MouseCursorScale;
@@ -115,27 +113,27 @@ namespace ImGuiNET.Unity
 		public float CircleTessellationMaxError;
 
 		[HideInInspector]
-		public NumericsV4f[] Colors = new NumericsV4f[(int)ImGuiCol.COUNT];
+		public Color[] Colors = new Color[(int)ImGuiCol.COUNT];
 
 		public unsafe void ApplyTo(ImGuiStylePtr s)
 		{
 			s.Alpha = Alpha;
-			s.WindowPadding = WindowPadding;
+			s.WindowPadding = Helper.V2f(WindowPadding);
 			s.WindowRounding = WindowRounding;
 			s.WindowBorderSize = WindowBorderSize;
-			s.WindowMinSize = WindowMinSize;
-			s.WindowTitleAlign = WindowTitleAlign;
+			s.WindowMinSize = Helper.V2f(WindowMinSize);
+			s.WindowTitleAlign = Helper.V2f(WindowTitleAlign);
 			s.WindowMenuButtonPosition = WindowMenuButtonPosition;
 			s.ChildRounding = ChildRounding;
 			s.ChildBorderSize = ChildBorderSize;
 			s.PopupRounding = PopupRounding;
 			s.PopupBorderSize = PopupBorderSize;
-			s.FramePadding = FramePadding;
+			s.FramePadding = Helper.V2f(FramePadding);
 			s.FrameRounding = FrameRounding;
 			s.FrameBorderSize = FrameBorderSize;
-			s.ItemSpacing = ItemSpacing;
-			s.ItemInnerSpacing = ItemInnerSpacing;
-			s.TouchExtraPadding = TouchExtraPadding;
+			s.ItemSpacing = Helper.V2f(ItemSpacing);
+			s.ItemInnerSpacing = Helper.V2f(ItemInnerSpacing);
+			s.TouchExtraPadding = Helper.V2f(TouchExtraPadding);
 			s.IndentSpacing = IndentSpacing;
 			s.ColumnsMinSpacing = ColumnsMinSpacing;
 			s.ScrollbarSize = ScrollbarSize;
@@ -145,38 +143,38 @@ namespace ImGuiNET.Unity
 			s.TabRounding = TabRounding;
 			s.TabBorderSize = TabBorderSize;
 			s.ColorButtonPosition = ColorButtonPosition;
-			s.ButtonTextAlign = ButtonTextAlign;
-			s.SelectableTextAlign = SelectableTextAlign;
-			s.DisplayWindowPadding = DisplayWindowPadding;
-			s.DisplaySafeAreaPadding = DisplaySafeAreaPadding;
+			s.ButtonTextAlign = Helper.V2f(ButtonTextAlign);
+			s.SelectableTextAlign = Helper.V2f(SelectableTextAlign);
+			s.DisplayWindowPadding = Helper.V2f(DisplayWindowPadding);
+			s.DisplaySafeAreaPadding = Helper.V2f(DisplaySafeAreaPadding);
 			s.MouseCursorScale = MouseCursorScale;
 			s.AntiAliasedLines = AntiAliasedLines;
 			s.AntiAliasedFill = AntiAliasedFill;
 			s.CurveTessellationTol = CurveTessellationTol;
 			s.CircleTessellationMaxError = CircleTessellationMaxError;
 			for (int i = 0; i < Colors.Length; ++i)
-				s.Colors[i] = Colors[i];
+				s.Colors[i] = Helper.Color(Colors[i]);
 		}
 
 		public unsafe void SetFrom(ImGuiStylePtr s)
 		{
 			Alpha = s.Alpha;
-			WindowPadding = s.WindowPadding;
+			WindowPadding = Helper.V2f(s.WindowPadding);
 			WindowRounding = s.WindowRounding;
 			WindowBorderSize = s.WindowBorderSize;
-			WindowMinSize = s.WindowMinSize;
-			WindowTitleAlign = s.WindowTitleAlign;
+			WindowMinSize = Helper.V2f(s.WindowMinSize);
+			WindowTitleAlign = Helper.V2f(s.WindowTitleAlign);
 			WindowMenuButtonPosition = s.WindowMenuButtonPosition;
 			ChildRounding = s.ChildRounding;
 			ChildBorderSize = s.ChildBorderSize;
 			PopupRounding = s.PopupRounding;
 			PopupBorderSize = s.PopupBorderSize;
-			FramePadding = s.FramePadding;
+			FramePadding = Helper.V2f(s.FramePadding);
 			FrameRounding = s.FrameRounding;
 			FrameBorderSize = s.FrameBorderSize;
-			ItemSpacing = s.ItemSpacing;
-			ItemInnerSpacing = s.ItemInnerSpacing;
-			TouchExtraPadding = s.TouchExtraPadding;
+			ItemSpacing = Helper.V2f(s.ItemSpacing);
+			ItemInnerSpacing = Helper.V2f(s.ItemInnerSpacing);
+			TouchExtraPadding = Helper.V2f(s.TouchExtraPadding);
 			IndentSpacing = s.IndentSpacing;
 			ColumnsMinSpacing = s.ColumnsMinSpacing;
 			ScrollbarSize = s.ScrollbarSize;
@@ -186,17 +184,17 @@ namespace ImGuiNET.Unity
 			TabRounding = s.TabRounding;
 			TabBorderSize = s.TabBorderSize;
 			ColorButtonPosition = s.ColorButtonPosition;
-			ButtonTextAlign = s.ButtonTextAlign;
-			SelectableTextAlign = s.SelectableTextAlign;
-			DisplayWindowPadding = s.DisplayWindowPadding;
-			DisplaySafeAreaPadding = s.DisplaySafeAreaPadding;
+			ButtonTextAlign = Helper.V2f(s.ButtonTextAlign);
+			SelectableTextAlign = Helper.V2f(s.SelectableTextAlign);
+			DisplayWindowPadding = Helper.V2f(s.DisplayWindowPadding);
+			DisplaySafeAreaPadding = Helper.V2f(s.DisplaySafeAreaPadding);
 			MouseCursorScale = s.MouseCursorScale;
 			AntiAliasedLines = s.AntiAliasedLines;
 			AntiAliasedFill = s.AntiAliasedFill;
 			CurveTessellationTol = s.CurveTessellationTol;
 			CircleTessellationMaxError = s.CircleTessellationMaxError;
 			for (int i = 0; i < Colors.Length; ++i)
-				Colors[i] = s.Colors[i];
+				Colors[i] = Helper.Color(s.Colors[i]);
 		}
 
 		private void Reset()
