@@ -1,7 +1,7 @@
 {
   "name": "com.batata.dear-imgui",
   "displayName": "Dear ImGui",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Bloat-free Immediate Mode Graphical User interface",
   "unity": "2020.3",
   "keywords": [
@@ -14,7 +14,6 @@
     "url": "https://realgames.co"
   },
   "dependencies": {
-    "com.unity.collections": "0.5.0-preview.9"
   },
   "repository": {
     "type": "git",
