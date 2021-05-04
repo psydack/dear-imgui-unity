@@ -35,31 +35,30 @@ namespace ImGuiNET
 			ImGui.Image((IntPtr)GetTextureId(info.texture), *(NumericsV2f*)&size, info.uv0, info.uv1);
 		}
 
-
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static void ImageButton(Texture tex)
+		public static bool ImageButton(Texture tex)
 		{
-			ImGui.ImageButton((IntPtr)GetTextureId(tex), new NumericsV2f(tex.width, tex.height));
+			return ImGui.ImageButton((IntPtr)GetTextureId(tex), new NumericsV2f(tex.width, tex.height));
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static unsafe void ImageButton(Texture tex, Vector2 size)
+		public static unsafe bool ImageButton(Texture tex, Vector2 size)
 		{
-			ImGui.ImageButton((IntPtr)GetTextureId(tex), *(NumericsV2f*)&size);
+			return ImGui.ImageButton((IntPtr)GetTextureId(tex), *(NumericsV2f*)&size);
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static void ImageButton(Sprite sprite)
+		public static bool ImageButton(Sprite sprite)
 		{
 			SpriteInfo info = GetSpriteInfo(sprite);
-			ImGui.ImageButton((IntPtr)GetTextureId(info.texture), info.size, info.uv0, info.uv1);
+			return ImGui.ImageButton((IntPtr)GetTextureId(info.texture), info.size, info.uv0, info.uv1);
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static unsafe void ImageButton(Sprite sprite, Vector2 size)
+		public static unsafe bool ImageButton(Sprite sprite, Vector2 size)
 		{
 			SpriteInfo info = GetSpriteInfo(sprite);
-			ImGui.ImageButton((IntPtr)GetTextureId(info.texture), *(NumericsV2f*)&size, info.uv0, info.uv1);
+			return ImGui.ImageButton((IntPtr)GetTextureId(info.texture), *(NumericsV2f*)&size, info.uv0, info.uv1);
 		}
 	}
 }
